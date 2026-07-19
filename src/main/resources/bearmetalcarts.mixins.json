@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "bearmetalcarts.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"AbstractMinecartAttributeMixin",
+		"AttributeCommandMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
