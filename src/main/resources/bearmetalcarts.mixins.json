@@ -6,6 +6,7 @@
 		"AbstractMinecartAttributeMixin",
 		"AbstractMinecartChunkLoadingMixin",
 		"AttributeCommandMixin",
+		"MinecartFurnaceFuelSlotMixin",
 		"MinecartItemMixin",
 		"VehicleEntityMixin"
 	],

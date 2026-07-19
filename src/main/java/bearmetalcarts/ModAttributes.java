@@ -25,5 +25,5 @@ public class ModAttributes {
 	}
 
 	public static final Holder<Attribute> MINECART_SPEED = register(
-			"minecart_speed", 0.4D, 0.0D, 1024.0D, true);
+			"minecart_speed", 0.4D, 0.0D, 1024.0D, false);
 }
