@@ -8,9 +8,14 @@
     "components": {
       "bearmetalcarts:minecart_speed": 1.2,
       "minecraft:custom_name": {
-        "fallback": "Netherite furnace minecart",
+        "fallback": "Netherite %s",
         "italic": false,
-        "translate": "bearmetalcarts.carts.furnace_minecart.netherite_minecart"
+        "translate": "bearmetalcarts.carts.netherite",
+        "with": [
+          {
+            "translate": "item.minecraft.furnace_minecart"
+          }
+        ]
       }
     },
     "id": "minecraft:furnace_minecart"

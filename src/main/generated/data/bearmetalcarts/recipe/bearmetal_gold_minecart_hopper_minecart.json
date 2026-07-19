@@ -10,9 +10,14 @@
     "components": {
       "bearmetalcarts:minecart_speed": 0.8,
       "minecraft:custom_name": {
-        "fallback": "Gold hopper minecart",
+        "fallback": "Gold %s",
         "italic": false,
-        "translate": "bearmetalcarts.carts.hopper_minecart.gold_minecart"
+        "translate": "bearmetalcarts.carts.gold",
+        "with": [
+          {
+            "translate": "item.minecraft.hopper_minecart"
+          }
+        ]
       }
     },
     "id": "minecraft:hopper_minecart"

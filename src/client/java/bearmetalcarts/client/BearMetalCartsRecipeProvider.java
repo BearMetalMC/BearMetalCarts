@@ -1,7 +1,6 @@
 package bearmetalcarts.client;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 import bearmetalcarts.ModComponents;
@@ -40,12 +39,9 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 	}
 
 	public static MinecartSpeed[] minecartSpeeds = new MinecartSpeed[] {
-			new MinecartSpeed(Items.COPPER_BLOCK.weathering().unaffected(), 0.6, 3, "copper_minecart",
-					(s) -> "Copper" + s.replace("_", " ").replaceAll("(^|\\s)(\\w)", " $2")),
-			new MinecartSpeed(Items.GOLD_BLOCK, .8, 3, "gold_minecart",
-					(s) -> "Gold" + s.replace("_", " ").replaceAll("(^|\\s)(\\w)", " $2")),
-			new MinecartSpeed(Items.NETHERITE_BLOCK, 1.2, 1, "netherite_minecart",
-					(s) -> "Netherite" + s.replace("_", " ").replaceAll("(^|\\s)(\\w)", " $2".toUpperCase(Locale.ROOT)))
+			new MinecartSpeed(Items.COPPER_BLOCK.weathering().unaffected(), 0.6, 3, "copper_minecart", "Copper"),
+			new MinecartSpeed(Items.GOLD_BLOCK, .8, 3, "gold_minecart", "Gold"),
+			new MinecartSpeed(Items.NETHERITE_BLOCK, 1.2, 1, "netherite_minecart", "Netherite")
 	};
 
 	@Override
@@ -59,9 +55,10 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 					Identifier id = Identifier.parse(getItemName(item));
 					if (id.getNamespace().equals("minecraft") && id.getPath().contains("minecart") && !id.getPath().contains("command")) {
 						for (MinecartSpeed minecartSpeed : minecartSpeeds) {
+							Component itemName = Component.translatable(item.getDescriptionId());
 							var text = Component.translatableWithFallback(
-											"bearmetalcarts.carts." + id.getPath() + "."
-													+ minecartSpeed.nameKey(),minecartSpeed.fallbackName().apply(id.getPath()));
+											"bearmetalcarts.carts." + minecartSpeed.tierKey(),
+											minecartSpeed.tierName() + " %s", itemName);
 									text.setStyle(Style.EMPTY.withItalic(false));
 							DataComponentPatch patch = DataComponentPatch.builder()
 									.set(ModComponents.MINECART_SPEED, minecartSpeed.speed())

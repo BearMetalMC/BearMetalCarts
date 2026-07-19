@@ -8,9 +8,14 @@
     "components": {
       "bearmetalcarts:minecart_speed": 1.2,
       "minecraft:custom_name": {
-        "fallback": "Netherite tnt minecart",
+        "fallback": "Netherite %s",
         "italic": false,
-        "translate": "bearmetalcarts.carts.tnt_minecart.netherite_minecart"
+        "translate": "bearmetalcarts.carts.netherite",
+        "with": [
+          {
+            "translate": "item.minecraft.tnt_minecart"
+          }
+        ]
       }
     },
     "id": "minecraft:tnt_minecart"

@@ -10,9 +10,14 @@
     "components": {
       "bearmetalcarts:minecart_speed": 0.8,
       "minecraft:custom_name": {
-        "fallback": "Gold furnace minecart",
+        "fallback": "Gold %s",
         "italic": false,
-        "translate": "bearmetalcarts.carts.furnace_minecart.gold_minecart"
+        "translate": "bearmetalcarts.carts.gold",
+        "with": [
+          {
+            "translate": "item.minecraft.furnace_minecart"
+          }
+        ]
       }
     },
     "id": "minecraft:furnace_minecart"

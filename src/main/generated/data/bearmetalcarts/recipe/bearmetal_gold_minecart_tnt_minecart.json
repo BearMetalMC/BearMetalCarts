@@ -10,9 +10,14 @@
     "components": {
       "bearmetalcarts:minecart_speed": 0.8,
       "minecraft:custom_name": {
-        "fallback": "Gold tnt minecart",
+        "fallback": "Gold %s",
         "italic": false,
-        "translate": "bearmetalcarts.carts.tnt_minecart.gold_minecart"
+        "translate": "bearmetalcarts.carts.gold",
+        "with": [
+          {
+            "translate": "item.minecraft.tnt_minecart"
+          }
+        ]
       }
     },
     "id": "minecraft:tnt_minecart"

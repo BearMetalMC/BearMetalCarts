@@ -10,9 +10,14 @@
     "components": {
       "bearmetalcarts:minecart_speed": 0.6,
       "minecraft:custom_name": {
-        "fallback": "Copper chest minecart",
+        "fallback": "Copper %s",
         "italic": false,
-        "translate": "bearmetalcarts.carts.chest_minecart.copper_minecart"
+        "translate": "bearmetalcarts.carts.copper",
+        "with": [
+          {
+            "translate": "item.minecraft.chest_minecart"
+          }
+        ]
       }
     },
     "id": "minecraft:chest_minecart"

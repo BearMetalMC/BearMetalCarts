@@ -10,9 +10,14 @@
     "components": {
       "bearmetalcarts:minecart_speed": 0.8,
       "minecraft:custom_name": {
-        "fallback": "Gold chest minecart",
+        "fallback": "Gold %s",
         "italic": false,
-        "translate": "bearmetalcarts.carts.chest_minecart.gold_minecart"
+        "translate": "bearmetalcarts.carts.gold",
+        "with": [
+          {
+            "translate": "item.minecraft.chest_minecart"
+          }
+        ]
       }
     },
     "id": "minecraft:chest_minecart"
