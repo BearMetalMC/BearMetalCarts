@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:minecart",
+    "minecraft:copper_block",
+    "minecraft:copper_block",
+    "minecraft:copper_block"
+  ],
+  "result": {
+    "components": {
+      "bearmetalcarts:minecart_speed": 0.6,
+      "minecraft:custom_name": {
+        "fallback": "Copper minecart",
+        "translate": "bearmetalcarts.carts.minecart.copper_minecart"
+      }
+    },
+    "id": "minecraft:minecart"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:furnace_minecart",
+    "minecraft:copper_block",
+    "minecraft:copper_block",
+    "minecraft:copper_block"
+  ],
+  "result": {
+    "components": {
+      "bearmetalcarts:minecart_speed": 0.6,
+      "minecraft:custom_name": {
+        "fallback": "Copper furnace minecart",
+        "translate": "bearmetalcarts.carts.furnace_minecart.copper_minecart"
+      }
+    },
+    "id": "minecraft:furnace_minecart"
+  }
+}

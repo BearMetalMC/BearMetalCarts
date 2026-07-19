@@ -1,0 +1,17 @@
+{
+  "bearmetalcarts.carts.copper_block.chest_minecart": "Copper chest minecart",
+  "bearmetalcarts.carts.copper_block.furnace_minecart": "Copper furnace minecart",
+  "bearmetalcarts.carts.copper_block.hopper_minecart": "Copper hopper minecart",
+  "bearmetalcarts.carts.copper_block.minecart": "Copper minecart",
+  "bearmetalcarts.carts.copper_block.tnt_minecart": "Copper tnt minecart",
+  "bearmetalcarts.carts.gold_block.chest_minecart": "Gold chest minecart",
+  "bearmetalcarts.carts.gold_block.furnace_minecart": "Gold furnace minecart",
+  "bearmetalcarts.carts.gold_block.hopper_minecart": "Gold hopper minecart",
+  "bearmetalcarts.carts.gold_block.minecart": "Gold minecart",
+  "bearmetalcarts.carts.gold_block.tnt_minecart": "Gold tnt minecart",
+  "bearmetalcarts.carts.netherite_block.chest_minecart": "Netherite chest minecart",
+  "bearmetalcarts.carts.netherite_block.furnace_minecart": "Netherite furnace minecart",
+  "bearmetalcarts.carts.netherite_block.hopper_minecart": "Netherite hopper minecart",
+  "bearmetalcarts.carts.netherite_block.minecart": "Netherite minecart",
+  "bearmetalcarts.carts.netherite_block.tnt_minecart": "Netherite tnt minecart"
+}

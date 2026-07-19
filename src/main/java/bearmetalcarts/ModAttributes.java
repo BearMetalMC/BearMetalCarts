@@ -9,8 +9,7 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
 public class ModAttributes {
 	public static void init() {
-		// This method is called during mod initialization to ensure that the attributes
-		// are registered.
+		BearMetalCarts.LOGGER.info("Registering {} attributes", BearMetalCarts.MOD_ID);
 	}
 
 	private static Holder<Attribute> register(

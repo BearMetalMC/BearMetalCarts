@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:hopper_minecart",
+    "minecraft:gold_block",
+    "minecraft:gold_block",
+    "minecraft:gold_block"
+  ],
+  "result": {
+    "components": {
+      "bearmetalcarts:minecart_speed": 0.8,
+      "minecraft:custom_name": {
+        "fallback": "Gold hopper minecart",
+        "translate": "bearmetalcarts.carts.hopper_minecart.gold_minecart"
+      }
+    },
+    "id": "minecraft:hopper_minecart"
+  }
+}

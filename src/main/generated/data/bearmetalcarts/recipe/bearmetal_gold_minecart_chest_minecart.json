@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:chest_minecart",
+    "minecraft:gold_block",
+    "minecraft:gold_block",
+    "minecraft:gold_block"
+  ],
+  "result": {
+    "components": {
+      "bearmetalcarts:minecart_speed": 0.8,
+      "minecraft:custom_name": {
+        "fallback": "Gold chest minecart",
+        "translate": "bearmetalcarts.carts.chest_minecart.gold_minecart"
+      }
+    },
+    "id": "minecraft:chest_minecart"
+  }
+}
