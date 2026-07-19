@@ -2,13 +2,11 @@ package bearmetalcarts.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import bearmetalcarts.AttributeHolderMinecart;
 import bearmetalcarts.ModComponents;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -19,11 +17,14 @@ import net.minecraft.world.item.context.UseOnContext;
 public class MinecartItemMixin {
 	@ModifyVariable(method = "useOn", at = @At("STORE"), name = "cart")
 	private AbstractMinecart bearmetalcarts$setMaxSpeed(AbstractMinecart cart, UseOnContext context) {
-		if (cart != null) {
 			ItemStack stack = context.getItemInHand();
-			Double speed = stack.getOrDefault(ModComponents.MINECART_SPEED, 0.4D);
-			AttributeMap holder = ((AttributeHolderMinecart) cart).bearmetalcarts$getAttributeMap();
-			holder.getInstance(bearmetalcarts.ModAttributes.MINECART_SPEED).setBaseValue(speed);
+			Double speed = stack.get(ModComponents.MINECART_SPEED);
+		if (cart != null && speed !=null) {
+			AttributeHolderMinecart holder = (AttributeHolderMinecart) cart;
+			AttributeMap attributes = holder.bearmetalcarts$getAttributeMap();
+			attributes.getInstance(bearmetalcarts.ModAttributes.MINECART_SPEED).setBaseValue(speed);
+			holder.bearmetalcarts$setTierName(stack.get(DataComponents.CUSTOM_NAME));
+			cart.setCustomName(null);
 		}
 		return cart;
 	}

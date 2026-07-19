@@ -9,6 +9,7 @@
       "bearmetalcarts:minecart_speed": 1.2,
       "minecraft:custom_name": {
         "fallback": "Netherite hopper minecart",
+        "italic": false,
         "translate": "bearmetalcarts.carts.hopper_minecart.netherite_minecart"
       }
     },

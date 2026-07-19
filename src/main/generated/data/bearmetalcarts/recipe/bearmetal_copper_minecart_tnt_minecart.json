@@ -11,6 +11,7 @@
       "bearmetalcarts:minecart_speed": 0.6,
       "minecraft:custom_name": {
         "fallback": "Copper tnt minecart",
+        "italic": false,
         "translate": "bearmetalcarts.carts.tnt_minecart.copper_minecart"
       }
     },

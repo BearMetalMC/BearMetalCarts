@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 import bearmetalcarts.ModComponents;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
@@ -18,6 +19,7 @@ import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.datafix.fixes.ItemStackCustomNameToOverrideComponentFix;
@@ -57,13 +59,13 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 					Identifier id = Identifier.parse(getItemName(item));
 					if (id.getNamespace().equals("minecraft") && id.getPath().contains("minecart") && !id.getPath().contains("command")) {
 						for (MinecartSpeed minecartSpeed : minecartSpeeds) {
+							var text = Component.translatableWithFallback(
+											"bearmetalcarts.carts." + id.getPath() + "."
+													+ minecartSpeed.nameKey(),minecartSpeed.fallbackName().apply(id.getPath()));
+									text.setStyle(Style.EMPTY.withItalic(false));
 							DataComponentPatch patch = DataComponentPatch.builder()
 									.set(ModComponents.MINECART_SPEED, minecartSpeed.speed())
-									.set(DataComponents.CUSTOM_NAME,
-									Component.translatableWithFallback(
-									"bearmetalcarts.carts." + id.getPath() + "."
-									+ minecartSpeed.nameKey(),
-									minecartSpeed.fallbackName().apply(id.getPath())))
+									.set(DataComponents.CUSTOM_NAME, text)
 									.build();
 
 							ItemStackTemplate template = new ItemStackTemplate(itemHolder, 1, patch);
@@ -82,6 +84,6 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 
 	@Override
 	public String getName() {
-		return "ExampleModRecipeProvider";
+		return "BearMetalCartsRecipeProvider";
 	}
 }

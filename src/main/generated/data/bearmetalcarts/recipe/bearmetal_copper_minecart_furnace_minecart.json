@@ -11,6 +11,7 @@
       "bearmetalcarts:minecart_speed": 0.6,
       "minecraft:custom_name": {
         "fallback": "Copper furnace minecart",
+        "italic": false,
         "translate": "bearmetalcarts.carts.furnace_minecart.copper_minecart"
       }
     },

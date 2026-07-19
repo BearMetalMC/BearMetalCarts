@@ -4,6 +4,8 @@ import bearmetalcarts.AttributeHolderMinecart;
 import bearmetalcarts.ModAttributes;
 import bearmetalcarts.ModMinecartAttributes;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -11,6 +13,7 @@ import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,6 +27,9 @@ public abstract class AbstractMinecartAttributeMixin implements AttributeHolderM
 	@Unique
 	private AttributeMap bearmetalcarts$attributeMap;
 
+	@Unique
+	private @Nullable Component bearmetalcarts$tierName;
+
 	@Override
 	public AttributeMap bearmetalcarts$getAttributeMap() {
 		if (this.bearmetalcarts$attributeMap == null) {
@@ -31,6 +37,16 @@ public abstract class AbstractMinecartAttributeMixin implements AttributeHolderM
 		}
 
 		return this.bearmetalcarts$attributeMap;
+	}
+
+	@Override
+	public @Nullable Component bearmetalcarts$getTierName() {
+		return this.bearmetalcarts$tierName;
+	}
+
+	@Override
+	public void bearmetalcarts$setTierName(final @Nullable Component name) {
+		this.bearmetalcarts$tierName = name;
 	}
 
 	@Inject(method = "getMaxSpeed", at = @At("RETURN"), cancellable = true)
@@ -44,11 +60,13 @@ public abstract class AbstractMinecartAttributeMixin implements AttributeHolderM
 	@Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
 	private void bearmetalcarts$writeAttributes(final ValueOutput output, final CallbackInfo ci) {
 		output.store("BearMetalCartsAttributes", AttributeInstance.Packed.LIST_CODEC, this.bearmetalcarts$getAttributeMap().pack());
+		output.storeNullable("BearMetalCartsTierName", ComponentSerialization.CODEC, this.bearmetalcarts$tierName);
 	}
 
 	@Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
 	private void bearmetalcarts$readAttributes(final ValueInput input, final CallbackInfo ci) {
 		input.read("BearMetalCartsAttributes", AttributeInstance.Packed.LIST_CODEC)
 				.ifPresent(this.bearmetalcarts$getAttributeMap()::apply);
+		this.bearmetalcarts$tierName = input.read("BearMetalCartsTierName", ComponentSerialization.CODEC).orElse(null);
 	}
 }

@@ -5,7 +5,8 @@
 	"mixins": [
 		"AbstractMinecartAttributeMixin",
 		"AttributeCommandMixin",
-		"MinecartItemMixin"
+		"MinecartItemMixin",
+		"VehicleEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
