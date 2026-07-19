@@ -1,0 +1,6 @@
+accessWidener v2 official
+
+# Ticket's duration constructor is private; the public one always uses the
+# TicketType's fixed timeout. MinecartChunkLoader needs per-ticket durations
+# driven by the bearmetalcarts loading-duration gamerules.
+accessible method net/minecraft/server/level/Ticket <init> (Lnet/minecraft/server/level/TicketType;IJ)V

@@ -17,6 +17,8 @@ public class BearMetalCarts implements ModInitializer {
 		LOGGER.info("Bear Metal Carts mod is initializing!");
 		ModAttributes.init();
 		ModComponents.init();
+		ModGameRules.init();
+		ModTicketTypes.init();
 	}
 
 	public static Identifier id(String path) {

@@ -25,6 +25,7 @@
 			"bearmetalcarts.client.BearMetalCartsDataGenerator"
 		]
 	},
+	"accessWidener": "bearmetalcarts.accesswidener",
 	"mixins": [
 		"bearmetalcarts.mixins.json",
 		{

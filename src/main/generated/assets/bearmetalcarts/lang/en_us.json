@@ -1,5 +1,11 @@
 {
   "bearmetalcarts.carts.copper": "Copper %s",
   "bearmetalcarts.carts.gold": "Gold %s",
-  "bearmetalcarts.carts.netherite": "Netherite %s"
+  "bearmetalcarts.carts.netherite": "Netherite %s",
+  "gamerule.bearmetalcarts.allow_chunkloading": "Minecart Chunk Loading",
+  "gamerule.bearmetalcarts.allow_chunkloading.description": "Whether minecarts load chunks: disallow, while_moving (only moving carts), or allow (moving carts plus a 3x3 area around carts that just stopped).",
+  "gamerule.bearmetalcarts.mobile_loading_duration": "Moving Minecart Loading Duration",
+  "gamerule.bearmetalcarts.mobile_loading_duration.description": "How long, in ticks, chunks stay loaded after a moving minecart last touched them.",
+  "gamerule.bearmetalcarts.station_loading_duration": "Stopped Minecart Loading Duration",
+  "gamerule.bearmetalcarts.station_loading_duration.description": "How long, in ticks, the 3x3 chunk area around a minecart stays loaded after it stops moving."
 }
