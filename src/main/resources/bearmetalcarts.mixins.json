@@ -5,7 +5,7 @@
 	"mixins": [
 		"AbstractMinecartChunkLoadingMixin",
 		"AbstractMinecartCustomDataMixin",
-		"MinecartFurnaceBrakingMixin",
+		"MinecartFurnaceEngineMixin",
 		"MinecartFurnaceFuelSlotMixin",
 		"MinecartItemMixin",
 		"NewMinecartBehaviorBrakeMixin",

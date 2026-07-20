@@ -6,11 +6,14 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import bearmetalcarts.BearMetalCartsData;
 import bearmetalcarts.CustomDataHolderMinecart;
+import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.phys.Vec3;
 
 @Mixin(MinecartItem.class)
 public class MinecartItemMixin {
@@ -24,6 +27,19 @@ public class MinecartItemMixin {
 				holder.bearmetalcarts$setTierName(stack.get(DataComponents.CUSTOM_NAME));
 				cart.setCustomName(null);
 			});
+
+			// Seed a furnace cart's heading from the way the player was facing as they placed it. Fuel handed
+			// over by hand sets vanilla's push vector directly and so still wins; this only decides which way a
+			// cart goes when its first fuel arrives impersonally, from a hopper, with no gesture to read a
+			// direction from.
+			Player player = context.getPlayer();
+			if (cart.isFurnace() && player != null) {
+				Direction facing = player.getDirection();
+				CustomDataHolderMinecart holder = (CustomDataHolderMinecart) cart;
+				BearMetalCartsData.setPushDirection(
+						holder.bearmetalcarts$getCustomData(),
+						new Vec3(facing.getStepX(), 0.0, facing.getStepZ()));
+			}
 		}
 
 		// Dormant attribute-based implementation, kept for a future BMC+ variant with a required client mod

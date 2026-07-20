@@ -82,8 +82,10 @@ public abstract class MinecartFurnaceFuelSlotMixin extends AbstractMinecart impl
 				if (movement.lengthSqr() > 1.0E-6) {
 					this.push = movement.normalize();
 				} else {
-					// Parked — most likely on a brake rail, where the cart may have sat long enough to burn
-					// through its tank and lose vanilla's push vector. Leave the way it came in.
+					// Standing still, so its own movement says nothing about which way it faces: either it burnt
+					// dry while parked and lost vanilla's push vector, or it has never moved at all and this
+					// hopper-fed item is its first fuel. Fall back to the heading saved when it last ran, or
+					// failing that the one MinecartItemMixin seeded from the player who placed it.
 					CustomDataHolderMinecart holder = (CustomDataHolderMinecart) this;
 					BearMetalCartsData.pushDirection(holder.bearmetalcarts$getCustomData())
 							.ifPresent(direction -> this.push = direction);
