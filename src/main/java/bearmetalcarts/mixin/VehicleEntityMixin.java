@@ -4,20 +4,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import bearmetalcarts.AttributeHolderMinecart;
-import bearmetalcarts.ModAttributes;
-import bearmetalcarts.ModComponents;
+import bearmetalcarts.BearMetalCartsData;
+import bearmetalcarts.CustomDataHolderMinecart;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.item.ItemStack;
 
 /**
  * Vanilla's shared vehicle destroy path only ever preserves an entity's custom name onto the item it drops, so
- * a tiered minecart's speed component is otherwise lost when it's broken. This restores it, along with the
+ * a tiered minecart's speed data is otherwise lost when it's broken. This restores it, along with the
  * tier's display name (kept off the entity itself so it never renders as a nameplate or container title, see
- * {@link AttributeHolderMinecart#bearmetalcarts$getTierName()}).
+ * {@link CustomDataHolderMinecart#bearmetalcarts$getTierName()}).
  */
 @Mixin(VehicleEntity.class)
 public abstract class VehicleEntityMixin {
@@ -30,18 +28,28 @@ public abstract class VehicleEntityMixin {
 			name = "itemStack"
 	)
 	private ItemStack bearmetalcarts$preserveTierData(ItemStack itemStack) {
-		if ((Object) this instanceof AttributeHolderMinecart holder) {
+		if ((Object) this instanceof CustomDataHolderMinecart holder) {
 			Component tierName = holder.bearmetalcarts$getTierName();
 			if (tierName != null) {
-				AttributeInstance instance = holder.bearmetalcarts$getAttributeMap().getInstance(ModAttributes.MINECART_SPEED);
-				if (instance != null) {
-					itemStack.set(ModComponents.MINECART_SPEED, instance.getBaseValue());
-				}
-
+				holder.bearmetalcarts$getCustomData()
+						.getDouble(BearMetalCartsData.TAG_MAX_SPEED)
+						.ifPresent(speed -> BearMetalCartsData.setMaxSpeedOnStack(itemStack, speed));
 				itemStack.set(DataComponents.CUSTOM_NAME, tierName);
 			}
 		}
 
+		// Dormant attribute-based implementation, kept for a future BMC+ variant with a required client mod:
+		//	if ((Object) this instanceof AttributeHolderMinecart holder) {
+		//		Component tierName = holder.bearmetalcarts$getTierName();
+		//		if (tierName != null) {
+		//			AttributeInstance instance = holder.bearmetalcarts$getAttributeMap().getInstance(bearmetalcarts.ModAttributes.MINECART_SPEED);
+		//			if (instance != null) {
+		//				itemStack.set(bearmetalcarts.ModComponents.MINECART_SPEED, instance.getBaseValue());
+		//			}
+		//
+		//			itemStack.set(DataComponents.CUSTOM_NAME, tierName);
+		//		}
+		//	}
 		return itemStack;
 	}
 }

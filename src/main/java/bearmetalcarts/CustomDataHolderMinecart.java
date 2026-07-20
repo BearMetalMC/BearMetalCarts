@@ -1,18 +1,18 @@
 package bearmetalcarts;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 
 import org.jspecify.annotations.Nullable;
 
 /**
- * DORMANT: interface of the attribute-based implementation, no longer mixed into minecarts (its mixin,
- * AbstractMinecartAttributeMixin, is removed from bearmetalcarts.mixins.json so that {@link ModAttributes} never
- * loads and vanilla clients can connect). Superseded by {@link CustomDataHolderMinecart}; kept for a future BMC+
- * variant that requires a client-side mod.
+ * Vanilla-client-safe successor to {@link AttributeHolderMinecart}: mixed-in minecarts expose the mutable
+ * {@code BearMetalCarts} compound persisted with the entity (layout in {@link BearMetalCartsData}) instead of a
+ * custom attribute map, so no registry entries have to sync to the client.
  */
-public interface AttributeHolderMinecart {
-	AttributeMap bearmetalcarts$getAttributeMap();
+public interface CustomDataHolderMinecart {
+	/** The live {@code BearMetalCarts} compound for this cart; mutations persist with the entity. */
+	CompoundTag bearmetalcarts$getCustomData();
 
 	/**
 	 * The display name a tiered minecart item stamped onto this entity at craft/place time, kept separate from

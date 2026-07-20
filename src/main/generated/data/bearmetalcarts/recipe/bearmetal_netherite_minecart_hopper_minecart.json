@@ -6,7 +6,11 @@
   ],
   "result": {
     "components": {
-      "bearmetalcarts:minecart_speed": 1.2,
+      "minecraft:custom_data": {
+        "BearMetalCarts": {
+          "max_speed": 1.2
+        }
+      },
       "minecraft:custom_name": {
         "fallback": "Netherite %s",
         "italic": false,

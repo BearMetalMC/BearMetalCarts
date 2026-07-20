@@ -3,7 +3,8 @@ package bearmetalcarts.client;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import bearmetalcarts.ModComponents;
+import bearmetalcarts.BearMetalCartsData;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
@@ -60,8 +61,11 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 											"bearmetalcarts.carts." + minecartSpeed.tierKey(),
 											minecartSpeed.tierName() + " %s", itemName);
 									text.setStyle(Style.EMPTY.withItalic(false));
+							// Dormant custom-component variant for a future BMC+ mod with a required client mod:
+							//	.set(ModComponents.MINECART_SPEED, minecartSpeed.speed())
 							DataComponentPatch patch = DataComponentPatch.builder()
-									.set(ModComponents.MINECART_SPEED, minecartSpeed.speed())
+									.set(DataComponents.CUSTOM_DATA,
+											CustomData.of(BearMetalCartsData.customDataWithMaxSpeed(minecartSpeed.speed())))
 									.set(DataComponents.CUSTOM_NAME, text)
 									.build();
 

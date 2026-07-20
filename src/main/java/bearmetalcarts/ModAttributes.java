@@ -7,6 +7,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
+/**
+ * DORMANT: not initialized and must not be referenced from live code — touching this class triggers static
+ * registration of {@code bearmetalcarts:minecart_speed}, and any custom attribute in the registry breaks vanilla
+ * clients at connection time (registry sync mismatch). Cart speed is currently driven by plain NBT instead (see
+ * {@link BearMetalCartsData}). Kept for a future BMC+ variant that requires a client-side mod.
+ */
 public class ModAttributes {
 	public static void init() {
 		BearMetalCarts.LOGGER.info("Registering {} attributes", BearMetalCarts.MOD_ID);

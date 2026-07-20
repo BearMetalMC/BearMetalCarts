@@ -21,6 +21,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * DORMANT: removed from bearmetalcarts.mixins.json so it never applies — loading it would initialize
+ * {@link ModAttributes} and register a custom attribute, which breaks vanilla clients at connection time.
+ * Superseded by {@link AbstractMinecartCustomDataMixin}; kept for a future BMC+ variant that requires a
+ * client-side mod. If re-enabled, note it persists under the legacy "BearMetalCartsAttributes" NBT key.
+ */
 @Mixin(AbstractMinecart.class)
 public abstract class AbstractMinecartAttributeMixin implements AttributeHolderMinecart {
 

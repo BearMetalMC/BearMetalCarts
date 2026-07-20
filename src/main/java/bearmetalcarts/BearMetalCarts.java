@@ -15,10 +15,14 @@ public class BearMetalCarts implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Bear Metal Carts mod is initializing!");
-		ModAttributes.init();
-		ModComponents.init();
+		// Attribute/component registration is intentionally dormant: registering custom registry entries breaks
+		// vanilla clients at connection time (registry sync mismatch). Cart data now lives in plain NBT/custom_data
+		// (see BearMetalCartsData). Re-enable these for a future BMC+ variant that requires a client-side mod.
+		// ModAttributes.init();
+		// ModComponents.init();
 		ModGameRules.init();
 		ModTicketTypes.init();
+		ModCommands.init();
 	}
 
 	public static Identifier id(String path) {

@@ -27,7 +27,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 /**
- * Vanilla's /attribute command resolves every target through a private static
+ * DORMANT: removed from bearmetalcarts.mixins.json along with the rest of the attribute-based implementation
+ * (see {@link AttributeHolderMinecart}) so vanilla clients can connect; cart speed is now edited via
+ * /bearmetalcarts (bearmetalcarts.ModCommands) instead. Kept for a future BMC+ variant with a client-side mod.
+ *
+ * <p>Vanilla's /attribute command resolves every target through a private static
  * method typed to return LivingEntity, so anything that isn't one is rejected
  * with "%s is not a valid entity for this command" before our attribute is
  * ever looked up. This widens target resolution to also accept minecarts
