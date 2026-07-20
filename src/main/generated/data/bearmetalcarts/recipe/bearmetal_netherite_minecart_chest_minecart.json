@@ -8,6 +8,7 @@
     "components": {
       "minecraft:custom_data": {
         "BearMetalCarts": {
+          "mass": 16.0,
           "max_speed": 1.2
         }
       },

@@ -28,6 +28,9 @@ public class MinecartItemMixin {
 				cart.setCustomName(null);
 			});
 
+			BearMetalCartsData.massFromStack(stack).ifPresent(mass -> ((CustomDataHolderMinecart) cart)
+					.bearmetalcarts$getCustomData().putDouble(BearMetalCartsData.TAG_MASS, mass));
+
 			// Seed a furnace cart's heading from the way the player was facing as they placed it. Fuel handed
 			// over by hand sets vanilla's push vector directly and so still wins; this only decides which way a
 			// cart goes when its first fuel arrives impersonally, from a hopper, with no gesture to read a

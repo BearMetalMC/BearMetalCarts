@@ -5,10 +5,12 @@
 	"mixins": [
 		"AbstractMinecartChunkLoadingMixin",
 		"AbstractMinecartCustomDataMixin",
+		"AbstractMinecartPushMixin",
 		"MinecartFurnaceEngineMixin",
 		"MinecartFurnaceFuelSlotMixin",
 		"MinecartItemMixin",
 		"NewMinecartBehaviorBrakeMixin",
+		"NewMinecartBehaviorPushChainMixin",
 		"VehicleEntityMixin"
 	],
 	"injectors": {

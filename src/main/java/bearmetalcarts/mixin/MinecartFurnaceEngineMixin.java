@@ -51,6 +51,12 @@ public abstract class MinecartFurnaceEngineMixin implements FurnaceEngineMinecar
 	@Unique
 	private int bearmetalcarts$heldFuel = -1;
 
+	@Unique
+	private int bearmetalcarts$coupledCapTick = -1;
+
+	@Unique
+	private double bearmetalcarts$coupledCap = Double.MAX_VALUE;
+
 	@Override
 	public void bearmetalcarts$markBraking() {
 		this.bearmetalcarts$brakingTick = ((MinecartFurnace) (Object) this).tickCount;
@@ -59,6 +65,26 @@ public abstract class MinecartFurnaceEngineMixin implements FurnaceEngineMinecar
 	@Override
 	public boolean bearmetalcarts$isBraking() {
 		return this.bearmetalcarts$brakingTick == ((MinecartFurnace) (Object) this).tickCount;
+	}
+
+	@Override
+	public void bearmetalcarts$markCoupledCap(final double maxSpeed) {
+		int tickCount = ((MinecartFurnace) (Object) this).tickCount;
+		if (this.bearmetalcarts$coupledCapTick != tickCount) {
+			this.bearmetalcarts$coupledCapTick = tickCount;
+			this.bearmetalcarts$coupledCap = maxSpeed;
+		} else {
+			// Only PushChainSolver.tick() calls this, once per cart per tick, so this defensively takes the
+			// tighter of two marks rather than assuming it can only ever be called once.
+			this.bearmetalcarts$coupledCap = Math.min(this.bearmetalcarts$coupledCap, maxSpeed);
+		}
+	}
+
+	@Override
+	public double bearmetalcarts$getCoupledCap() {
+		return this.bearmetalcarts$coupledCapTick == ((MinecartFurnace) (Object) this).tickCount
+				? this.bearmetalcarts$coupledCap
+				: Double.MAX_VALUE;
 	}
 
 	@Unique
@@ -84,9 +110,12 @@ public abstract class MinecartFurnaceEngineMixin implements FurnaceEngineMinecar
 		}
 
 		Vec3 heading = this.push.horizontal().normalize();
+		// Ramp target is capped at whatever PushChainSolver says the cart ahead can currently be driven to, not
+		// just this cart's own tier cap — see bearmetalcarts$getCoupledCap for why.
+		double target = Math.min(this.getMaxSpeed(serverLevel), this.bearmetalcarts$getCoupledCap());
 		// Returns the post-drag speed directly: letting vanilla's slowdown factor apply on top would cost more
 		// speed per tick than the ramp adds, and the cart would stall short of its cap instead of reaching it.
-		cir.setReturnValue(FurnaceEngineMinecart.accelerate(deltaMovement, heading, this.getMaxSpeed(serverLevel)));
+		cir.setReturnValue(FurnaceEngineMinecart.accelerate(deltaMovement, heading, target));
 	}
 
 	@Inject(method = "tick", at = @At("HEAD"))

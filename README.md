@@ -20,6 +20,37 @@ The mod introduces realistic physics to furnace minecarts, replacing vanilla's i
 - **Braking**: Furnace carts gradually slow down on powered rails with the brake setting, coming to a complete stop instead of settling at equilibrium
 - **Fuel efficiency**: Stopped furnace carts no longer burn fuel needlessly, allowing them to idle at stations
 
+### Push-Chain Collisions
+
+The mod replaces vanilla's erratic minecart-on-minecart collisions with a momentum-conserving solver (all carts,
+not just furnace carts; requires the same *Minecart Improvements* experiment as the tiered speeds):
+
+- **Inelastic collisions**: When a cart catches up to another on the same track, both speeds are blended toward
+  the shared speed `(m₁s₁ + m₂s₂) / (m₁ + m₂)`, each along its own heading — carts never bounce apart, and never
+  stop dead on contact. A pushed cart is never driven past its own max speed: a fast furnace cart behind a slower
+  cart settles in behind it at the slower cart's pace.
+- **Carts keep their spacing**: coupled carts hold a fixed standoff rather than sinking into each other, including
+  a furnace cart pushing a train of them at netherite speed. The standoff is restored once per tick after every
+  cart has moved, so nothing can eat into it, and a train settles back-to-front in a single pass.
+- **Powered pushing**: A fueled furnace cart pressed against carts ahead re-couples with them every tick, so its
+  engine's thrust flows into the whole train — divided across the coupled mass, meaning heavier trains wind up
+  proportionally slower but still reach the engine's speed.
+- **Mass matters**: Default masses are 4 (regular/TNT/spawner), 6 (hopper), 8 (chest), and 12 (furnace); tiered
+  carts are heavier by ×1.25/×1.5/×2 for copper/gold/netherite. A furnace cart plows a bare cart along with
+  little lost speed; a bare cart rear-ending a furnace cart mostly just stops. Mass is stored per cart as
+  `BearMetalCarts.mass` and can be read or written with `/bmc <targets> mass [<value>]`.
+- **Emergent trains**: There is no coupling mechanic — a "train" is just adjacent carts continuously agreeing on
+  velocity, re-solved pairwise every tick. A shove into a line of carts ripples down it over a few ticks, like
+  slack running out of real couplers, and a furnace cart pressed against a line of carts pushes the whole line.
+- **Track-aware**: Carts only interact along connected rail (a short lookahead along the path the cart would
+  actually take), with separation measured as travel distance along that path — so a cart parked on a diverging
+  branch doesn't disturb traffic passing it, and carts on the parallel legs of a hairpin don't couple across the
+  gap; trains push cleanly around hairpins.
+- **Passengers ride along cleanly**: pushing an occupied cart (a player or a mannequin) no longer causes the train
+  to bunch up and lurch — that turned out to be vanilla's own rider collision (a mounted passenger is a solid
+  body to *other* entities' movement, cart or not) fighting the solver from underneath; the fix disables it for
+  coupled on-rail carts the same way cart-on-cart collision already was.
+
 ## Furnace Minecart Specifications
 
 ### A note on "max speed"

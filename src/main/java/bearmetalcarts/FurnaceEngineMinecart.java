@@ -46,6 +46,21 @@ public interface FurnaceEngineMinecart {
 	/** Whether the cart hit a brake rail this tick and should therefore not apply its engine push. */
 	boolean bearmetalcarts$isBraking();
 
+	/**
+	 * Caps this tick's {@link #accelerate} target below the cart's own max speed — set by {@code PushChainSolver}
+	 * whenever it finds another cart ahead on the rail path, to whatever that cart can currently be driven to.
+	 * Without this, a furnace's engine ramps toward its own max speed every tick regardless of what it's pushing,
+	 * gets slapped back down by the next collision solve the instant it overtakes the cart ahead, and immediately
+	 * starts ramping up again — a tug-of-war that reads as the pushed cart rushing forward and abruptly
+	 * correcting. Capping the ramp target here instead means the engine converges on the sustainable speed
+	 * smoothly, the same way it already does for its own tier's cap.
+	 */
+	void bearmetalcarts$markCoupledCap(double maxSpeed);
+
+	/** This tick's engine cap from {@link #bearmetalcarts$markCoupledCap}, or {@link Double#MAX_VALUE} if nothing
+	 * marked one — i.e. nothing is currently ahead on the path to push against. */
+	double bearmetalcarts$getCoupledCap();
+
 	/** Vanilla's halt curve, replaced with one that bleeds speed off over a distance instead of in a few ticks. */
 	static Vec3 brake(Vec3 deltaMovement) {
 		// Vanilla's applyNaturalSlowdown always flattens Y; match it so braking doesn't leak vertical movement.

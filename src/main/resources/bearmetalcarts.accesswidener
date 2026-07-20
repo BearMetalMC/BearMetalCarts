@@ -4,3 +4,9 @@ accessWidener v2 official
 # TicketType's fixed timeout. MinecartChunkLoader needs per-ticket durations
 # driven by the bearmetalcarts loading-duration gamerules.
 accessible method net/minecraft/server/level/Ticket <init> (Lnet/minecraft/server/level/TicketType;IJ)V
+
+# PushChainSolver caps a pushed cart's speed at that cart's own rail speed cap (getMaxSpeed is protected).
+# The MinecartFurnace override must be widened together with the base method: leaving it protected while the
+# base goes public would be an illegal visibility reduction and the class would fail to load.
+accessible method net/minecraft/world/entity/vehicle/minecart/AbstractMinecart getMaxSpeed (Lnet/minecraft/server/level/ServerLevel;)D
+accessible method net/minecraft/world/entity/vehicle/minecart/MinecartFurnace getMaxSpeed (Lnet/minecraft/server/level/ServerLevel;)D

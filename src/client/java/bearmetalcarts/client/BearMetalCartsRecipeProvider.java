@@ -39,10 +39,12 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 		super(output, registriesFuture);
 	}
 
+	// Mass multipliers scale the per-type base masses in BearMetalCartsData: higher tiers are built heavier, so
+	// they carry proportionally more momentum into the push-chain collision solver.
 	public static MinecartSpeed[] minecartSpeeds = new MinecartSpeed[] {
-			new MinecartSpeed(Items.COPPER_BLOCK.weathering().unaffected(), 0.6, 3, "copper_minecart", "Copper"),
-			new MinecartSpeed(Items.GOLD_BLOCK, .8, 3, "gold_minecart", "Gold"),
-			new MinecartSpeed(Items.NETHERITE_BLOCK, 1.2, 1, "netherite_minecart", "Netherite")
+			new MinecartSpeed(Items.COPPER_BLOCK.weathering().unaffected(), 0.6, 3, "copper_minecart", "Copper", 1.25),
+			new MinecartSpeed(Items.GOLD_BLOCK, .8, 3, "gold_minecart", "Gold", 1.5),
+			new MinecartSpeed(Items.NETHERITE_BLOCK, 1.2, 1, "netherite_minecart", "Netherite", 2.0)
 	};
 
 	@Override
@@ -63,9 +65,10 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 									text.setStyle(Style.EMPTY.withItalic(false));
 							// Dormant custom-component variant for a future BMC+ mod with a required client mod:
 							//	.set(ModComponents.MINECART_SPEED, minecartSpeed.speed())
+							double mass = BearMetalCartsData.baseMassForCartId(id.getPath()) * minecartSpeed.massMultiplier();
 							DataComponentPatch patch = DataComponentPatch.builder()
 									.set(DataComponents.CUSTOM_DATA,
-											CustomData.of(BearMetalCartsData.customDataWithMaxSpeed(minecartSpeed.speed())))
+											CustomData.of(BearMetalCartsData.customDataForTier(minecartSpeed.speed(), mass)))
 									.set(DataComponents.CUSTOM_NAME, text)
 									.build();
 

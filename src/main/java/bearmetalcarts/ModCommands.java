@@ -19,11 +19,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
 /**
- * {@code /bearmetalcarts <targets> maxspeed [<speed>]} (alias {@code /bmc}): reads or writes the
- * {@code BearMetalCarts} custom data on minecart entities, much like /data but scoped to this mod's keys.
- * Currently only {@code max_speed}; future cart behaviors hang off the same compound. All feedback is literal
- * text rather than translatable components, because vanilla clients connecting to a modded server don't have
- * this mod's lang file.
+ * {@code /bearmetalcarts <targets> maxspeed [<speed>]} and {@code ... mass [<mass>]} (alias {@code /bmc}): reads
+ * or writes the {@code BearMetalCarts} custom data on minecart entities, much like /data but scoped to this mod's
+ * keys. Future cart behaviors hang off the same compound. All feedback is literal text rather than translatable
+ * components, because vanilla clients connecting to a modded server don't have this mod's lang file.
  */
 public final class ModCommands {
 	private static final SimpleCommandExceptionType ERROR_NO_MINECARTS = new SimpleCommandExceptionType(
@@ -47,7 +46,14 @@ public final class ModCommands {
 												.executes(c -> setMaxSpeed(
 														c.getSource(),
 														EntityArgument.getEntities(c, "targets"),
-														DoubleArgumentType.getDouble(c, "speed")))))));
+														DoubleArgumentType.getDouble(c, "speed")))))
+								.then(Commands.literal("mass")
+										.executes(c -> getMass(c.getSource(), EntityArgument.getEntities(c, "targets")))
+										.then(Commands.argument("mass", DoubleArgumentType.doubleArg(0.001D, 1024.0D))
+												.executes(c -> setMass(
+														c.getSource(),
+														EntityArgument.getEntities(c, "targets"),
+														DoubleArgumentType.getDouble(c, "mass")))))));
 
 		dispatcher.register(Commands.literal("bmc")
 				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -76,6 +82,34 @@ public final class ModCommands {
 				? Component.literal("Set max speed of ").append(carts.getFirst().getDisplayName()).append(" to " + speed)
 				: Component.literal("Set max speed of " + carts.size() + " minecarts to " + speed);
 		source.sendSuccess(() -> message, true);
+		return carts.size();
+	}
+
+	private static int setMass(CommandSourceStack source, Collection<? extends Entity> targets, double mass) throws CommandSyntaxException {
+		List<AbstractMinecart> carts = minecarts(targets);
+		for (AbstractMinecart cart : carts) {
+			((CustomDataHolderMinecart) cart).bearmetalcarts$getCustomData().putDouble(BearMetalCartsData.TAG_MASS, mass);
+		}
+
+		Component message = carts.size() == 1
+				? Component.literal("Set mass of ").append(carts.getFirst().getDisplayName()).append(" to " + mass)
+				: Component.literal("Set mass of " + carts.size() + " minecarts to " + mass);
+		source.sendSuccess(() -> message, true);
+		return carts.size();
+	}
+
+	private static int getMass(CommandSourceStack source, Collection<? extends Entity> targets) throws CommandSyntaxException {
+		List<AbstractMinecart> carts = minecarts(targets);
+		for (AbstractMinecart cart : carts) {
+			Optional<Double> mass = ((CustomDataHolderMinecart) cart).bearmetalcarts$getCustomData()
+					.getDouble(BearMetalCartsData.TAG_MASS);
+			Component message = Component.empty()
+					.append(cart.getDisplayName())
+					.append(mass.map(value -> " mass: " + value)
+							.orElseGet(() -> " mass: not set (type default " + BearMetalCartsData.defaultMass(cart) + ")"));
+			source.sendSuccess(() -> message, false);
+		}
+
 		return carts.size();
 	}
 

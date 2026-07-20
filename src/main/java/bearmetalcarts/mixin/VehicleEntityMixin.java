@@ -33,7 +33,10 @@ public abstract class VehicleEntityMixin {
 			if (tierName != null) {
 				holder.bearmetalcarts$getCustomData()
 						.getDouble(BearMetalCartsData.TAG_MAX_SPEED)
-						.ifPresent(speed -> BearMetalCartsData.setMaxSpeedOnStack(itemStack, speed));
+						.ifPresent(speed -> BearMetalCartsData.setDoubleOnStack(itemStack, BearMetalCartsData.TAG_MAX_SPEED, speed));
+				holder.bearmetalcarts$getCustomData()
+						.getDouble(BearMetalCartsData.TAG_MASS)
+						.ifPresent(mass -> BearMetalCartsData.setDoubleOnStack(itemStack, BearMetalCartsData.TAG_MASS, mass));
 				itemStack.set(DataComponents.CUSTOM_NAME, tierName);
 			}
 		}
