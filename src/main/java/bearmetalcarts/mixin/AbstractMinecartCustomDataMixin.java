@@ -2,6 +2,7 @@ package bearmetalcarts.mixin;
 
 import bearmetalcarts.BearMetalCartsData;
 import bearmetalcarts.CustomDataHolderMinecart;
+import bearmetalcarts.ModExperiments;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,6 +25,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * from a plain {@code BearMetalCarts} NBT compound persisted in the entity's save data, rather than a custom
  * attribute map. Because it round-trips through addAdditionalSaveData/readAdditionalSaveData, the compound is
  * also visible to and editable by vanilla's /data command.
+ *
+ * <p>The max-speed override only applies when the level has vanilla's {@code minecart_improvements} experimental
+ * feature enabled (see {@link ModExperiments}) — carts moving faster than the vanilla cap behave unpredictably
+ * without the experimental minecart physics, so without the experiment tiered carts silently fall back to vanilla
+ * speed.
  */
 @Mixin(AbstractMinecart.class)
 public abstract class AbstractMinecartCustomDataMixin implements CustomDataHolderMinecart {
@@ -51,6 +57,10 @@ public abstract class AbstractMinecartCustomDataMixin implements CustomDataHolde
 
 	@Inject(method = "getMaxSpeed", at = @At("RETURN"), cancellable = true)
 	private void bearmetalcarts$overrideMaxSpeed(final ServerLevel level, final CallbackInfoReturnable<Double> cir) {
+		if (!ModExperiments.minecartImprovementsEnabled(level)) {
+			return;
+		}
+
 		this.bearmetalcarts$customData.getDouble(BearMetalCartsData.TAG_MAX_SPEED).ifPresent(cir::setReturnValue);
 	}
 

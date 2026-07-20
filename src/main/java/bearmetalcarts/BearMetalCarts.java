@@ -23,6 +23,7 @@ public class BearMetalCarts implements ModInitializer {
 		ModGameRules.init();
 		ModTicketTypes.init();
 		ModCommands.init();
+		ModExperiments.init();
 	}
 
 	public static Identifier id(String path) {
