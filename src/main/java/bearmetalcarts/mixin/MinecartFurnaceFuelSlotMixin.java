@@ -1,5 +1,8 @@
 package bearmetalcarts.mixin;
 
+import bearmetalcarts.BearMetalCartsData;
+import bearmetalcarts.CustomDataHolderMinecart;
+
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -78,6 +81,12 @@ public abstract class MinecartFurnaceFuelSlotMixin extends AbstractMinecart impl
 				Vec3 movement = this.getDeltaMovement().horizontal();
 				if (movement.lengthSqr() > 1.0E-6) {
 					this.push = movement.normalize();
+				} else {
+					// Parked — most likely on a brake rail, where the cart may have sat long enough to burn
+					// through its tank and lose vanilla's push vector. Leave the way it came in.
+					CustomDataHolderMinecart holder = (CustomDataHolderMinecart) this;
+					BearMetalCartsData.pushDirection(holder.bearmetalcarts$getCustomData())
+							.ifPresent(direction -> this.push = direction);
 				}
 			}
 		}
