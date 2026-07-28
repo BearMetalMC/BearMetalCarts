@@ -3,9 +3,9 @@
 	"id": "bearmetalcarts",
 	"version": "${version}",
 	"name": "BearMetalCarts",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "What the minecart experiment was destined to be.",
 	"authors": [
-		"Me!"
+		"Emmaline Autumn"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
