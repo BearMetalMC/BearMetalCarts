@@ -20,10 +20,6 @@ public class ModTicketTypes {
 								| TicketType.FLAG_KEEP_DIMENSION_ACTIVE));
 	}
 
-	// The type timeouts mirror the duration gamerule defaults, but every ticket is
-	// submitted with an explicit ticks-left read from the gamerule at submit time
-	// (see MinecartChunkLoader). The timeout must stay non-zero: vanilla's
-	// TicketStorage only counts down and expires tickets whose type has a timeout.
 	public static final TicketType MOBILE_CART = register("mobile_cart", 40L);
 	public static final TicketType STATION_CART = register("station_cart", 600L);
 }

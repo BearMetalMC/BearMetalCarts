@@ -117,8 +117,7 @@ public final class MinecartChunkLoader {
 
 		this.submittedCurrentChunk = current;
 		this.submittedNextChunk = next;
-		// Like the ender pearl's ticket timer: refresh one tick before expiry so
-		// loading stays continuous while the cart keeps moving.
+
 		this.resubmitAtGameTime = now + Math.max(1, duration - 1);
 	}
 
@@ -131,8 +130,7 @@ public final class MinecartChunkLoader {
 	private static void submitTicket(ServerLevel level, TicketType type, ChunkPos pos, int radius, int durationTicks) {
 		ServerChunkCache chunkSource = level.getChunkSource();
 		int ticketLevel = ChunkLevel.byStatus(FullChunkStatus.FULL) - radius;
-		// Remove-then-add instead of relying on addTicket's refresh: re-adding an
-		// existing ticket resets it to the type's fixed timeout, not the gamerule value.
+
 		chunkSource.removeTicketWithRadius(type, pos, radius);
 		chunkSource.addTicket(new Ticket(type, ticketLevel, durationTicks), pos);
 	}
@@ -214,7 +212,6 @@ public final class MinecartChunkLoader {
 
 			state = level.getBlockState(pos);
 			if (!(state.getBlock() instanceof BaseRailBlock)) {
-				// Ascending track may continue one block above or below the exit.
 				BlockPos above = pos.above();
 				BlockPos below = pos.below();
 				if (level.getBlockState(above).getBlock() instanceof BaseRailBlock) {

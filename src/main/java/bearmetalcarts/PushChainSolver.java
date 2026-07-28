@@ -130,7 +130,6 @@ public final class PushChainSolver {
     public static void tick(AbstractMinecart cart, ServerLevel level) {
         Vec3 velocity = cart.getDeltaMovement().horizontal();
         if (velocity.lengthSqr() < MIN_SPEED * MIN_SPEED) {
-            // Stationary carts never initiate; a moving cart behind them will find them in its own lookahead.
             return;
         }
 
@@ -174,8 +173,7 @@ public final class PushChainSolver {
 
             RailShape nextShape = shapeOf(level.getBlockState(next));
             Vec3i out = exitOnwards(nextShape, exit);
-            // A block's travel direction is the way the path leaves it (a curve block's direction is past its
-            // apex); at the walk's end — connectivity broken — the entry direction is the best that's known.
+
             path.add(new PathStep(next, horizontalUnit(out != null ? out : exit)));
             if (out == null) {
                 break;
@@ -275,8 +273,7 @@ public final class PushChainSolver {
             }
 
             Vec3 toOther = other.position().subtract(cart.position()).horizontal();
-            if (index == 0 && toOther.length() > 1.0E-4 && toOther.dot(path.get(0).travel()) <= 0.0) {
-                // Sharing our rail block but behind us; the geometry only ever looks forward.
+            if (index == 0 && toOther.length() > 1.0E-4 && toOther.dot(path.getFirst().travel()) <= 0.0) {
                 continue;
             }
 
@@ -312,7 +309,7 @@ public final class PushChainSolver {
     /**
      * The inelastic solve, in speeds along each cart's own heading (see the class doc for why not velocity
      * vectors): while the carts are closing and within reaction range (already coupled, inside {@link
-     * #HOLD_DISTANCE}, or within {@link #REACTION_TICKS} of contact at the current closing rate), both speeds are
+     * #HOLD_DISTANCE} of contact at the current closing rate), both speeds are
      * blended toward the momentum-weighted shared speed — capped at the front cart's own max speed — each along
      * its own direction. Never elastic: carts don't spring apart. Only horizontal motion is pooled; each cart
      * keeps its own vertical motion for its rail logic to settle.
@@ -325,7 +322,7 @@ public final class PushChainSolver {
      * always gets the full correction outright, same as before. Snapping outright regardless of how far out the
      * target was is what made a fast cart's correction read as a sudden slam: at high speed the fixed lookahead
      * left barely a tick or two of warning, so the entire momentum-and-cap correction landed in one tick instead
-     * of being spread across the many ticks a fast cart's wider {@link #lookaheadBlocks} scan now affords it.
+     * of being spread across the many ticks a fast cart's wider {@link #LOOKAHEAD_BLOCKS} scan now affords it.
      *
      * <p>All geometry is path-relative. Distance is {@link Target#travelDistance()}, not the center-to-center
      * line. The front cart's speed is signed against the path's direction at its block (with the path, positive;
@@ -348,10 +345,7 @@ public final class PushChainSolver {
         double distance = target.travelDistance();
 
         Vec3 rearHeading = v1h.normalize();
-        // The front cart moves along its own heading only sign-corrected to agree with the path, so a parked or
-        // oncoming cart being absorbed is sent onwards around the curve, never backwards along the rear cart's
-        // line of sight. A moving cart exactly perpendicular to the block's travel axis is mid-corner, not
-        // oncoming, so the boundary counts as travelling with the path.
+
         double frontSign;
         Vec3 frontDir;
         if (v2h.length() > MIN_SPEED) {
@@ -365,22 +359,13 @@ public final class PushChainSolver {
         double s1 = v1h.length();
         double s2 = v2h.length() * frontSign;
         double closing = s1 - s2;
-        // Predict contact using the rear cart's own speed, not the pair's closing rate. This runs at the head of
-        // the rear cart's tick, so the rear is guaranteed not to have moved yet — but the front cart may already
-        // have moved this tick, since entity tick order is arbitrary. When it has, `distance` is inflated by
-        // exactly one tick of the front cart's travel and a closing-rate prediction reads the pair as further
-        // apart than it will be: measured, a coupled pair sitting at a true 1.12 reported 1.329 (1.12 + the front
-        // cart's 0.209) and never once fired, so the velocities never coupled at all and the train was being
-        // dragged along purely by the spacing correction. `distance - s1` is the honest worst case — the gap that
-        // remains once the rear cart makes the move it is about to make.
+
         boolean approaching = distance - s1 <= CONTACT_DISTANCE || distance <= HOLD_DISTANCE;
         if (closing > 0.0 && approaching) {
             double m1 = mass(cart);
             double m2 = mass(other);
             double shared = (m1 * s1 + m2 * s2) / (m1 + m2);
-            // Impedance cap: a cart can't be driven past its own rail speed cap — it would just re-clamp itself
-            // next tick and its pusher would perpetually slam into it. The rear cart clamps itself as it moves,
-            // as always.
+
             shared = Math.min(shared, other.getMaxSpeed(level));
 
             Vec3 v1 = cart.getDeltaMovement();
@@ -391,31 +376,12 @@ public final class PushChainSolver {
             other.needsSync = true;
 
             if (cart instanceof FurnaceEngineMinecart furnace) {
-                // Hold the engine to the speed this solve just agreed on, plus one tick of wind-up shared across
-                // the coupled mass, so it can't undo the solve later in the same tick by ramping back toward its
-                // own tier cap.
-                //
-                // Capping at the speed actually assigned — rather than at the cart-ahead's *max* speed — is the
-                // point: a blocked cart travels far below its max (a netherite cart crawling at 0.39 can still
-                // legally do 1.2), so a max-based cap let the engine drive 0.14/tick faster than the cart it was
-                // pushing, indefinitely. That sustained overdrive is what buried the furnace inside the cart
-                // ahead, with the positional correction saturated fighting it every tick. A max-based cap only
-                // ever worked when max happened to equal actual — i.e. all-vanilla carts.
-                //
-                // The wind-up term has to be here: `shared` is always below the rear cart's own speed while it is
-                // closing, so capping at `shared` flat is a ratchet that walks a train's speed monotonically down
-                // (measured: a free-track train decaying 0.13 -> 0.07 instead of climbing to 0.6). Scaling the
-                // engine's per-tick ramp by its share of the coupled mass is the physical statement — one engine
-                // hauling more mass accelerates proportionally slower — and it lets a free train wind up normally
-                // while still collapsing onto the front cart's pace when that cart genuinely cannot go faster.
+
                 double ramp = cart.getMaxSpeed(level) / FurnaceEngineMinecart.ACCELERATION_TICKS;
                 furnace.bearmetalcarts$markCoupledCap(shared + ramp * (m1 / (m1 + m2)));
             }
         }
 
-        // The standoff itself is not restored here — it is queued for {@link #enforceSpacing}, which runs once
-        // every cart has finished moving. See that method for why doing it from inside a cart's own tick cannot
-        // work no matter which cart of the pair is moved.
         PENDING_SPACING.add(new PendingSpacing(cart, other, frontDir));
     }
 
@@ -435,12 +401,6 @@ public final class PushChainSolver {
      * the already-corrected position of the cart behind it and the whole chain settles in a single pass.
      */
     public static void enforceSpacing() {
-        // Back of the train first. A correction moves the pair's *front* cart, and that cart is the *rear* of the
-        // next pair up the train — so settling back-to-front means each correction is computed from a rear cart
-        // that is already final, and one pass settles the whole chain. Going front-first instead leaves every
-        // pair but the last one broken, because each correction shifts the rear of a pair that was already
-        // "finished" (measured: a 3-cart train where only the last-corrected pair read 1.12 and the middle ones
-        // sagged to ~1.0).
         PENDING_SPACING.sort(Comparator.comparingDouble(
                 p -> p.front().position().horizontal().dot(p.frontDir())));
 
@@ -451,8 +411,6 @@ public final class PushChainSolver {
                 continue;
             }
 
-            // Gap along the direction of travel rather than raw separation, so the standoff stays meaningful
-            // through a curve (the same reason the solve works in path-relative geometry).
             double gap = front.position().subtract(rear.position()).horizontal().dot(pending.frontDir());
             if (gap <= 1.0E-4 || gap >= HOLD_DISTANCE) {
                 continue;

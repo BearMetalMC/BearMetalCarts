@@ -25,8 +25,7 @@ public class BearMetalCarts implements ModInitializer {
 		ModTicketTypes.init();
 		ModCommands.init();
 		ModExperiments.init();
-		// Coupled carts have their standoff restored after every cart has moved, not during their own ticks —
-		// see PushChainSolver.enforceSpacing for why that timing is load-bearing.
+
 		ServerTickEvents.END_SERVER_TICK.register(server -> PushChainSolver.enforceSpacing());
 	}
 
