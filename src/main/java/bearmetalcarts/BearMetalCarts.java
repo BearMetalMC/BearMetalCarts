@@ -21,6 +21,7 @@ public class BearMetalCarts implements ModInitializer {
 		// (see BearMetalCartsData). Re-enable these for a future BMC+ variant that requires a client-side mod.
 		// ModAttributes.init();
 		// ModComponents.init();
+		ModAttachments.init();
 		ModGameRules.init();
 		ModTicketTypes.init();
 		ModCommands.init();

@@ -6,9 +6,11 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import bearmetalcarts.BearMetalCartsData;
 import bearmetalcarts.CustomDataHolderMinecart;
+import bearmetalcarts.ModAttachments;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -38,6 +40,13 @@ public abstract class VehicleEntityMixin {
 						.getDouble(BearMetalCartsData.TAG_MASS)
 						.ifPresent(mass -> BearMetalCartsData.setDoubleOnStack(itemStack, BearMetalCartsData.TAG_MASS, mass));
 				itemStack.set(DataComponents.CUSTOM_NAME, tierName);
+			}
+		}
+
+		if ((Object) this instanceof AbstractMinecart cart) {
+			String tier = ModAttachments.tier(cart);
+			if (tier != null) {
+				BearMetalCartsData.setTierOnStack(itemStack, tier);
 			}
 		}
 

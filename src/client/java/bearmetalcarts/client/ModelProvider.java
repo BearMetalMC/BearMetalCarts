@@ -49,7 +49,7 @@ public class ModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(@NonNull ItemModelGenerators generator) {
         var variants = List.of("_gold", "_netherite", "_copper", "_exposed", "_weathered", "_oxidized");
-        var items = List.of(Items.MINECART, Items.CHEST_MINECART, Items.FURNACE_MINECART, Items.TNT_MINECART);
+        var items = List.of(Items.MINECART, Items.CHEST_MINECART, Items.FURNACE_MINECART, Items.TNT_MINECART, Items.HOPPER_MINECART);
 
         for (var item : items) {
             String baseTextureName = itemBaseTextureName(item);
@@ -84,6 +84,7 @@ public class ModelProvider extends FabricModelProvider {
         if (item == Items.CHEST_MINECART) return "chest_minecart";
         if (item == Items.FURNACE_MINECART) return "furnace_minecart";
         if (item == Items.TNT_MINECART) return "tnt_minecart";
+        if (item == Items.HOPPER_MINECART) return "hopper_minecart";
         throw new IllegalArgumentException("No texture name mapping for " + item);
     }
 

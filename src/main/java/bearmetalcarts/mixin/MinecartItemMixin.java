@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import bearmetalcarts.BearMetalCartsData;
 import bearmetalcarts.CustomDataHolderMinecart;
+import bearmetalcarts.ModAttachments;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
@@ -31,10 +32,8 @@ public class MinecartItemMixin {
 			BearMetalCartsData.massFromStack(stack).ifPresent(mass -> ((CustomDataHolderMinecart) cart)
 					.bearmetalcarts$getCustomData().putDouble(BearMetalCartsData.TAG_MASS, mass));
 
-			// Seed a furnace cart's heading from the way the player was facing as they placed it. Fuel handed
-			// over by hand sets vanilla's push vector directly and so still wins; this only decides which way a
-			// cart goes when its first fuel arrives impersonally, from a hopper, with no gesture to read a
-			// direction from.
+			BearMetalCartsData.tierFromStack(stack).ifPresent(tier -> ModAttachments.setTier(cart, tier));
+
 			Player player = context.getPlayer();
 			if (cart.isFurnace() && player != null) {
 				Direction facing = player.getDirection();

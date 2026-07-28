@@ -139,6 +139,29 @@ come from the `mass` key in the `BearMetalCarts` compound (stamped by tiered ite
 defaulting by cart type in `BearMetalCartsData` (furnace 12 > chest 8 > hopper 6 > other 4, tier
 multipliers 1.25/1.5/2).
 
+### Tier textures
+
+A cart's tier (`_copper`, `_gold`, …) is the one piece of cart data the *client* needs, and the only one that
+does not live in the `BearMetalCarts` compound: entity save data is never sent to clients, so the tier rides a
+persistent, synced Fabric data attachment (`ModAttachments.TIER`, NBT `fabric:attachments`/`bearmetalcarts:tier`)
+instead. That stays inside the vanilla-client rule — an attachment type is not a registry entry, and Fabric only
+sends the sync payload to clients that advertised the attachment id during configuration, so a vanilla client is
+sent nothing and renders every cart vanilla. On items the tier stays where item model predicates can read it: at
+the *root* of `custom_data`, beside the `BearMetalCarts` compound (`BearMetalCartsData.tierFromStack`).
+`MinecartItemMixin` moves it item → entity on placement, `VehicleEntityMixin` moves it back entity → item when a
+cart is broken (without which a broken tiered cart drops an item with the vanilla item model).
+
+Rendering is `AbstractMinecartRendererMixin`: vanilla submits the cart model with one hardcoded
+`MINECART_LOCATION`, so the swap is a single `@ModifyExpressionValue` on that field read. It is split over two
+injections because the halves of the render pipeline see different things — the tier is on the entity, which only
+`extractRenderState` gets, while the texture is needed in `submit`, which gets only the render state;
+`TieredMinecartRenderState` (mixed into vanilla's `MinecartRenderState`) is the slot between them, and it is
+re-assigned every extract, including back to null, because render states are pooled. Chest/furnace/hopper/TNT
+carts all render through `AbstractMinecartRenderer` and so tier for free. `CartTextures` maps tier to
+`bearmetalcarts:textures/entity/minecart/<tier>.png` by string rather than from a list, so adding a tier is just a
+`minecartSpeeds` entry plus a texture — but that makes the tier string untrusted (it can be hand-set through
+`/data`), hence the pattern match before it is pasted into a resource path.
+
 ### Tiered recipes (datagen)
 
 `BearMetalCartsRecipeProvider.minecartSpeeds` is the single source of truth for the three tiers (copper/gold/

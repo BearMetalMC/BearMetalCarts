@@ -104,6 +104,24 @@ public final class BearMetalCartsData {
 		return root;
 	}
 
+	/**
+	 * The crafted tier of an item, which unlike the speed/mass keys lives at the <em>root</em> of custom_data next
+	 * to the {@code BearMetalCarts} compound rather than inside it — that is where item model predicates can see
+	 * it (see {@code ModelProvider#tierMatches}). On the entity side the tier lives in {@link ModAttachments#TIER}.
+	 */
+	public static Optional<String> tierFromStack(ItemStack stack) {
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+		if (customData == null) {
+			return Optional.empty();
+		}
+
+		return customData.copyTag().getString(TAG_TIER);
+	}
+
+	public static void setTierOnStack(ItemStack stack, String tier) {
+		CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putString(TAG_TIER, tier));
+	}
+
 	public static Optional<Double> maxSpeedFromStack(ItemStack stack) {
 		return doubleFromStack(stack, TAG_MAX_SPEED);
 	}
