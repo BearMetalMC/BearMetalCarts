@@ -10,5 +10,6 @@ public class BearMetalCartsDataGenerator implements DataGeneratorEntrypoint {
 		Pack pack = fabricDataGenerator.createPack();
 		pack.addProvider(BearMetalCartsEnglishTranslationProvider::new);
 		pack.addProvider(BearMetalCartsRecipeProvider::new);
+		pack.addProvider(ModelProvider::new);
 	}
 }

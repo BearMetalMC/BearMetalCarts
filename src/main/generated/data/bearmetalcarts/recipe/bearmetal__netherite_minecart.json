@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:minecart",
+    "minecraft:netherite_block"
+  ],
+  "result": {
+    "components": {
+      "minecraft:custom_data": {
+        "BearMetalCarts": {
+          "mass": 8.0,
+          "max_speed": 1.2
+        },
+        "BearMetalCarts_tier": "_netherite"
+      },
+      "minecraft:custom_name": {
+        "fallback": "Netherite %s",
+        "italic": false,
+        "translate": "bearmetalcarts.carts.minecraft_netherite",
+        "with": [
+          {
+            "translate": "item.minecraft.minecart"
+          }
+        ]
+      }
+    },
+    "id": "minecraft:minecart"
+  }
+}

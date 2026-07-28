@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/furnace_minecart",
+    "layer1": "bearmetalcarts:item/weathered"
+  }
+}

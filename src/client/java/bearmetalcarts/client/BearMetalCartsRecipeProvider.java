@@ -28,9 +28,12 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 	}
 
 	public static MinecartSpeed[] minecartSpeeds = new MinecartSpeed[] {
-			new MinecartSpeed(Items.COPPER_BLOCK.weathering().unaffected(), 0.6, 3, "copper_minecart", "Copper", 1.25),
-			new MinecartSpeed(Items.GOLD_BLOCK, .8, 3, "gold_minecart", "Gold", 1.5),
-			new MinecartSpeed(Items.NETHERITE_BLOCK, 1.2, 1, "netherite_minecart", "Netherite", 2.0)
+			new MinecartSpeed(Items.COPPER_BLOCK.weathering().oxidized(), 0.05, 3, "_oxidized", "Oxidized Copper", 1.25),
+			new MinecartSpeed(Items.COPPER_BLOCK.weathering().weathered(), 0.1, 3, "_weathered", "Weathered Copper", 1.25),
+			new MinecartSpeed(Items.COPPER_BLOCK.weathering().exposed(), 0.2, 3, "_exposed", "Exposed Copper", 1.25),
+			new MinecartSpeed(Items.COPPER_BLOCK.weathering().unaffected(), 0.6, 3, "_copper", "Copper", 1.25),
+			new MinecartSpeed(Items.GOLD_BLOCK, .8, 3, "_gold", "Gold", 1.5),
+			new MinecartSpeed(Items.NETHERITE_BLOCK, 1.2, 1, "_netherite", "Netherite", 2.0)
 	};
 
 	@Override
@@ -46,13 +49,13 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 						for (MinecartSpeed minecartSpeed : minecartSpeeds) {
 							Component itemName = Component.translatable(item.getDescriptionId());
 							var text = Component.translatableWithFallback(
-											"bearmetalcarts.carts." + minecartSpeed.tierKey(),
+											"bearmetalcarts.carts.minecraft" + minecartSpeed.tierKey(),
 											minecartSpeed.tierName() + " %s", itemName);
 									text.setStyle(Style.EMPTY.withItalic(false));
 							double mass = BearMetalCartsData.baseMassForCartId(id.getPath()) * minecartSpeed.massMultiplier();
 							DataComponentPatch patch = DataComponentPatch.builder()
 									.set(DataComponents.CUSTOM_DATA,
-											CustomData.of(BearMetalCartsData.customDataForTier(minecartSpeed.speed(), mass)))
+											CustomData.of(BearMetalCartsData.customDataForTier(minecartSpeed.speed(), mass, minecartSpeed.tierKey())))
 									.set(DataComponents.CUSTOM_NAME, text)
 									.build();
 

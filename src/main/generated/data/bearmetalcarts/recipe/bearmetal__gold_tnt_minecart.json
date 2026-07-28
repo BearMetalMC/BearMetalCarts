@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:tnt_minecart",
+    "minecraft:gold_block",
+    "minecraft:gold_block",
+    "minecraft:gold_block"
+  ],
+  "result": {
+    "components": {
+      "minecraft:custom_data": {
+        "BearMetalCarts": {
+          "mass": 6.0,
+          "max_speed": 0.8
+        },
+        "BearMetalCarts_tier": "_gold"
+      },
+      "minecraft:custom_name": {
+        "fallback": "Gold %s",
+        "italic": false,
+        "translate": "bearmetalcarts.carts.minecraft_gold",
+        "with": [
+          {
+            "translate": "item.minecraft.tnt_minecart"
+          }
+        ]
+      }
+    },
+    "id": "minecraft:tnt_minecart"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:furnace_minecart",
+    "minecraft:weathered_copper",
+    "minecraft:weathered_copper",
+    "minecraft:weathered_copper"
+  ],
+  "result": {
+    "components": {
+      "minecraft:custom_data": {
+        "BearMetalCarts": {
+          "mass": 15.0,
+          "max_speed": 0.1
+        },
+        "BearMetalCarts_tier": "_weathered"
+      },
+      "minecraft:custom_name": {
+        "fallback": "Weathered Copper %s",
+        "italic": false,
+        "translate": "bearmetalcarts.carts.minecraft_weathered",
+        "with": [
+          {
+            "translate": "item.minecraft.furnace_minecart"
+          }
+        ]
+      }
+    },
+    "id": "minecraft:furnace_minecart"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:hopper_minecart",
+    "minecraft:oxidized_copper",
+    "minecraft:oxidized_copper",
+    "minecraft:oxidized_copper"
+  ],
+  "result": {
+    "components": {
+      "minecraft:custom_data": {
+        "BearMetalCarts": {
+          "mass": 7.5,
+          "max_speed": 0.05
+        },
+        "BearMetalCarts_tier": "_oxidized"
+      },
+      "minecraft:custom_name": {
+        "fallback": "Oxidized Copper %s",
+        "italic": false,
+        "translate": "bearmetalcarts.carts.minecraft_oxidized",
+        "with": [
+          {
+            "translate": "item.minecraft.hopper_minecart"
+          }
+        ]
+      }
+    },
+    "id": "minecraft:hopper_minecart"
+  }
+}

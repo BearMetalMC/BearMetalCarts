@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.minecart.MinecartChest;
 import net.minecraft.world.entity.vehicle.minecart.MinecartHopper;
@@ -20,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
  */
 public final class BearMetalCartsData {
 	public static final String TAG_ROOT = "BearMetalCarts";
+	public static final String TAG_TIER = "BearMetalCarts_tier";
 	public static final String TAG_MAX_SPEED = "max_speed";
 	public static final String TAG_MASS = "mass";
 	public static final String TAG_PUSH_X = "push_x";
@@ -92,12 +94,13 @@ public final class BearMetalCartsData {
 	}
 
 	/** Builds the full custom_data tag for a tiered cart item: placed carts get this max speed and mass. */
-	public static CompoundTag customDataForTier(double speed, double mass) {
+	public static CompoundTag customDataForTier(double speed, double mass, String tier) {
 		CompoundTag data = new CompoundTag();
 		data.putDouble(TAG_MAX_SPEED, speed);
 		data.putDouble(TAG_MASS, mass);
 		CompoundTag root = new CompoundTag();
 		root.put(TAG_ROOT, data);
+		root.put(TAG_TIER, new StringTag(tier));
 		return root;
 	}
 

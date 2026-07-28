@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:minecart",
+    "minecraft:exposed_copper",
+    "minecraft:exposed_copper",
+    "minecraft:exposed_copper"
+  ],
+  "result": {
+    "components": {
+      "minecraft:custom_data": {
+        "BearMetalCarts": {
+          "mass": 5.0,
+          "max_speed": 0.2
+        },
+        "BearMetalCarts_tier": "_exposed"
+      },
+      "minecraft:custom_name": {
+        "fallback": "Exposed Copper %s",
+        "italic": false,
+        "translate": "bearmetalcarts.carts.minecraft_exposed",
+        "with": [
+          {
+            "translate": "item.minecraft.minecart"
+          }
+        ]
+      }
+    },
+    "id": "minecraft:minecart"
+  }
+}

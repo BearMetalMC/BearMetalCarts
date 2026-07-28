@@ -1,0 +1,66 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:condition",
+      "on_false": {
+        "type": "minecraft:condition",
+        "on_false": {
+          "type": "minecraft:condition",
+          "on_false": {
+            "type": "minecraft:condition",
+            "on_false": {
+              "type": "minecraft:condition",
+              "on_false": {
+                "type": "minecraft:model",
+                "model": "minecraft:item/minecart"
+              },
+              "on_true": {
+                "type": "minecraft:model",
+                "model": "bearmetalcarts:item/minecart_gold"
+              },
+              "predicate": "minecraft:custom_data",
+              "property": "minecraft:component",
+              "value": "{BearMetalCarts_tier:\"_gold\"}"
+            },
+            "on_true": {
+              "type": "minecraft:model",
+              "model": "bearmetalcarts:item/minecart_netherite"
+            },
+            "predicate": "minecraft:custom_data",
+            "property": "minecraft:component",
+            "value": "{BearMetalCarts_tier:\"_netherite\"}"
+          },
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "bearmetalcarts:item/minecart_copper"
+          },
+          "predicate": "minecraft:custom_data",
+          "property": "minecraft:component",
+          "value": "{BearMetalCarts_tier:\"_copper\"}"
+        },
+        "on_true": {
+          "type": "minecraft:model",
+          "model": "bearmetalcarts:item/minecart_exposed"
+        },
+        "predicate": "minecraft:custom_data",
+        "property": "minecraft:component",
+        "value": "{BearMetalCarts_tier:\"_exposed\"}"
+      },
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "bearmetalcarts:item/minecart_weathered"
+      },
+      "predicate": "minecraft:custom_data",
+      "property": "minecraft:component",
+      "value": "{BearMetalCarts_tier:\"_weathered\"}"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "bearmetalcarts:item/minecart_oxidized"
+    },
+    "predicate": "minecraft:custom_data",
+    "property": "minecraft:component",
+    "value": "{BearMetalCarts_tier:\"_oxidized\"}"
+  }
+}
