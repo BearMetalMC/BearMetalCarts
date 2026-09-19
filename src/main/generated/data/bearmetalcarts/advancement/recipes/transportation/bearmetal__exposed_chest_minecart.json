@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "bearmetalcarts:bearmetal__exposed_chest_minecart"
+        "recipes": "bearmetalcarts:bearmetal__exposed_chest_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

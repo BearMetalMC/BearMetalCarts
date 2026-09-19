@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "bearmetalcarts:bearmetal__weathered_tnt_minecart"
+        "recipes": "bearmetalcarts:bearmetal__weathered_tnt_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

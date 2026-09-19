@@ -3,20 +3,22 @@ package bearmetalcarts.client;
 import java.util.concurrent.CompletableFuture;
 
 import bearmetalcarts.BearMetalCartsData;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import org.jspecify.annotations.NonNull;
@@ -37,8 +39,9 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 	};
 
 	@Override
-	protected @NonNull RecipeProvider createRecipeProvider(HolderLookup.@NonNull Provider registryLookup, @NonNull RecipeOutput exporter) {
-		return new RecipeProvider(registryLookup, exporter) {
+	protected @NonNull RecipeProvider createRecipeProvider(HolderLookup.@NonNull Provider registries,
+			@NonNull BootstrapContext<Recipe<?>> recipes, @NonNull BootstrapContext<Advancement> advancements) {
+		return new RecipeProvider(recipes, advancements) {
 			@Override
 			public void buildRecipes() {
 				HolderLookup.RegistryLookup<Item> itemLookup = registries.lookupOrThrow(Registries.ITEM);
@@ -65,7 +68,7 @@ public class BearMetalCartsRecipeProvider extends FabricRecipeProvider {
 							for (int i = 0; i < minecartSpeed.cost(); i++) {
 								b.requires(minecartSpeed.item());
 							}
-							b.unlockedBy(getHasName(minecartSpeed.item()),has(minecartSpeed.item())).save(exporter, "bearmetal_" +minecartSpeed.nameKey()+ "_"+ id.getPath());
+							b.unlockedBy(getHasName(minecartSpeed.item()),has(minecartSpeed.item())).save(output, "bearmetal_" +minecartSpeed.nameKey()+ "_"+ id.getPath());
 						}
 					}
 				}
